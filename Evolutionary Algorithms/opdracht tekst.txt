@@ -1,0 +1,8 @@
+De opdracht "Ridders van de ronde tafel" kun je met de volgende link downloaden: RondeTafel.zipDownload RondeTafel.zip
+
+Toevoeging: gebruik de volgende fitness functie: elke plek tussen twee opeenvolgende ridders aan de tafel,
+zeg tussen ridder A en ridder B, heeft een waarde die gelijk is aan (affiniteit van A naar B) * (affiniteit van B naar A).
+De fitness functie is de som van de waarden voor al deze "tussenplekken".
+Des te hoger die som is, des te beter de tafelzetting is. Hint: er is (wel) zinvolle crossover mogelijk.
+
+Upload your results in accordance with the guidelines formulated in Inleverformat.pdf

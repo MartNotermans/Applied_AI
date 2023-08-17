@@ -63,8 +63,8 @@ class ViewTools_NN():
         feature_maps = model2.predict(samples)
         feature_map = feature_maps[0] # there's only one sample in samples, so there's only one set of features
         
-        #print("featuremap shape:")
-        #print(feature_map.shape)
+        print("featuremap shape:")
+        print(feature_map.shape)
         
         if (len(feature_map.shape)==1):
             # the output is a list of numbers, not a list of images

@@ -32,7 +32,7 @@ num_classes = 10
 x_train = x_train.astype("float32") / 255
 x_test = x_test.astype("float32") / 255
 
-#print(x_test[0])
+print(x_test[0])
 print("Showing first test-image\n")
 plt.figure()
 plt.imshow(x_test[0])
@@ -71,6 +71,27 @@ Voorbeelden van layers:
 Beschrijf daarbij met welke stappen je bent gekomen tot je model,
 en beargumenteer elk van je stappen.
 
+stappen:
+- model van
+    dense layer 16
+    dropout 0.3
+    dense layer 10 (output layer)
+- batch_size = 4096
+  epochs = 250
+
+als eerst spelen met de dropout rate:
+- 0.3 geeft Test loss: 0.0160
+            Test accuracy: 0.9296
+
+- 0.1 geeft Test loss: 0.0123
+            Test accuracy: 0.9407
+
+gekozen voor een dropout rate van 0.1
+
+dense layer van 16 naar 32 veranderd
+- Test loss: 0.0087
+  Test accuracy: 0.9581
+    
 [ervaring: Zonder GPU, op I5 processor < 5 min, 250 epochs bij batchsize 4096]
 
 Spoiler-mogelijkheid:
@@ -84,9 +105,9 @@ def buildMyModel(inputShape):
     model = keras.Sequential(
         [
             keras.Input(shape=inputShape),
-            '''
-            Voeg hier je layers toe.
-            '''
+            keras.layers.Dense(units=32, activation='relu'),
+            keras.layers.Dropout( 0.1 ),
+            keras.layers.Dense(units=10, activation='relu'),
         ]
     )
     return model
@@ -99,15 +120,25 @@ Opdracht A2:
 
 Verklaar met kleine berekeningen het aantal parameters dat bij elke laag
 staat genoemd in bovenstaande model summary.
+
+28*28 = 784
+784 * 32 (want 32 nodes in 1e dense layer) = 25088
+25088 + 32 (want 32 biases) = 25120 ( = het aantal parameters van de 1e dense layer)
+
+32 * 10 (want 10 nodes in 2e dense layer) = 320
+320 + 10 (want 10 biases) = 330 ( = het aantal parameters van de 2e dense layer)
+
+25120 + 330 = 25450 ( = het totaal aantal parameters volgens de summary)
+
 """
 
 """
 # Train the model
 """
-batch_size = 10   # Larger can mean faster training (especially when using the gpu: 4096), 
+batch_size = 4096   # Larger can mean faster training (especially when using the gpu: 4096), 
                   # but requires more system memory. Select it properly for your system.
                     
-epochs = 1000     # it's probably more then you like to wait for,
+epochs = 250     # it's probably more then you like to wait for,
                   # but you can interrupt training anytime with CTRL+C
 
 learningrate = 0.01
@@ -153,7 +184,8 @@ print(y_test[0],"\n")
 # study the meaning of the filtered outputs by comparing them for
 # a few samples
 nLastLayer = len(model.layers)-1
-nLayer = nLastLayer                 # this time, I select the last layer, such that the end-outputs are visualised.
+# nLayer = nLastLayer                 # this time, I select the last layer, such that the end-outputs are visualised.
+nLayer = 0
 print("lastLayer:",nLastLayer)
 
 baseFilenameForSave=None
@@ -170,6 +202,11 @@ ViewTools_NN.printFeatureMapsForLayer(nLayer, model, x_test_flat, x_test, 7, bas
 Opdracht A3: 
 
 1 Leg uit wat de betekenis is van de output images die bovenstaand genenereerd worden met "printFeatureMapsForLayer".
+    dit geeft de output van de eerste 8 samples, zodat je inzicht hebt in wat je model doet
+    in dit voorbeeld kun je daaraan zien hoe de output layer eruit ziet en wat de uitkomst is voor een input sample
 2 Leg uit wat de betekenis zou zijn van wat je ziet als je aan die functie de index van de eerste dense layer meegeeft.
+    dan zie je de output van de eerste dense leyer, in mijn geval 32 nodes,
+    hier kun je niet zo veel aan zien omdat bij een dense layer de 2d structuur van een foto verloren gaat
 3 Leg uit wat de betekenis zou zijn van wat je ziet als je aan die functie de index van de tweede dense layer meegeeft.
+    in dit geval is de 2e dense layer de output layer, dus zie je hetzelfde als bij vraag 1
 """
